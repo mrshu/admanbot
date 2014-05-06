@@ -12,7 +12,9 @@ def url_matcher(event, url, *args):
         url = "http://" + url
 
     try:
-        r = requests.get(url)
+        r = requests.get(url, timeout=1)
+    except requests.exceptions.Timeout:
+        return "> Too long response..."
     except:
         event.log.debug("Couldn't open url " + str(url.encode("utf-8")))
         return
