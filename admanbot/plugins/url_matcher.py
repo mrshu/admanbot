@@ -5,18 +5,23 @@ from readability.readability import Document
 from brutal.core.plugin import BotPlugin, cmd, event, match, threaded
 
 
-
+@threaded
 @match(regex=r'(?:.*\s+|)((https?:\/\/)?([a-z0-9\.-]+)\.([a-z\.]{2,6})(/\w\.-]*)*([/a-z0-9\.-_%]+)?)(?:.*\s+|)')
 def url_matcher(event, url, *args):
     if (not url.startswith("http://") and not url.startswith("https://")):
         url = "http://" + url
-
+    
     try:
-        r = requests.get(url, timeout=1)
+        r = requests.get(url, timeout=5)
     except requests.exceptions.Timeout:
-        return "> Too long response..."
+        event.log.debug("Server is not responding: " + str(url.encode("utf-8")))
+        if vars(event)['meta']['nick'] is not '':
+            return vars(event)['meta']['nick'] + ": server is not responding"
+        return
     except:
         event.log.debug("Couldn't open url " + str(url.encode("utf-8")))
+        if vars(event)['meta']['nick'] is not '':
+            return vars(event)['meta']['nick'] + ": could not open url"
         return
 
     readable_article = Document(r.text).summary()
