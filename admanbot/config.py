@@ -2,7 +2,8 @@ INSTALLED_PLUGINS = (
     'brutal.plugins.basic',
     #'brutal.plugins.logging',
     'admanbot.plugins.example',
-    'admanbot.plugins.url_matcher'
+    'admanbot.plugins.url_matcher',
+    'admanbot.plugins.traffic'
 )
 
 BOTS = [
@@ -34,7 +35,8 @@ BOTS = [
         ],
         'enabled_plugins': {
             'admanbot.plugins.example': {},
-            'admanbot.plugins.url_matcher': {}
+            'admanbot.plugins.url_matcher': {},
+            'admanbot.plugins.traffic': {}
         },  # if this isn't set, load all
         'plugin_settings': {}
     },
